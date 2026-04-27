@@ -1,0 +1,61 @@
+name: 'AVD for Developers CD'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/**'
+      - 'backend/**'
+      - '.github/workflows/deploy.yml'
+
+jobs:
+  build-and-test:
+    name: 'Validation & Image Build'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source
+      uses: actions/checkout@v3
+
+    - name: Run Pytest
+      run: |
+        pip install pytest fastapi
+        pytest tests/
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build & Push API Gateway
+      run: |
+        az acr login --name acrdev
+        docker build -t acrdev.azurecr.io/devopstrio/dev-api:${{ github.sha }} ./backend
+        docker push acrdev.azurecr.io/devopstrio/dev-api:${{ github.sha }}
+
+    - name: Build & Push Engines
+      run: |
+        docker build -t acrdev.azurecr.io/devopstrio/workspace-engine:${{ github.sha }} ./apps/workspace-engine
+        docker push acrdev.azurecr.io/devopstrio/workspace-engine:${{ github.sha }}
+
+  deploy-to-aks:
+    name: 'Deploy Orchestration Layer'
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Azure CLI Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: AKS Set Context
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: 'rg-avd-dev-workstations-prd'
+        cluster-name: 'aks-avd-dev-prd'
+
+    - name: Helm Deployment
+      run: |
+        helm upgrade --install avd-dev ./helm/avd-for-developers \
+        --namespace avd-dev-prod --create-namespace \
+        --set api.image.tag=${{ github.sha }}

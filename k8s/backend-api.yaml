@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: avd-dev-api
+  namespace: avd-dev-prod
+  labels:
+    app: dev-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dev-api
+  template:
+    metadata:
+      labels:
+        app: dev-api
+    spec:
+      containers:
+      - name: gateway
+        image: acrdev.azurecr.io/devopstrio/dev-api:v1.0.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: dev-secrets
+              key: db-url
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: avd-dev-svc
+  namespace: avd-dev-prod
+spec:
+  selector:
+    app: dev-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspace-provisioner
+  namespace: avd-dev-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workspace-engine
+  template:
+    metadata:
+      labels:
+        app: workspace-engine
+    spec:
+      containers:
+      - name: provisioner
+        image: acrdev.azurecr.io/devopstrio/workspace-engine:latest
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dev-portal-ingress
+  namespace: avd-dev-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - dev.devopstrio.co.uk
+    secretName: dev-portal-tls
+  rules:
+  - host: dev.devopstrio.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: avd-dev-svc
+            port:
+              number: 80
