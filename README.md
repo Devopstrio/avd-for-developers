@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 <img src="https://raw.githubusercontent.com/Devopstrio/.github/main/assets/Browser_logo.png" height="90" alt="Devopstrio Logo" />
 
@@ -33,21 +33,21 @@ This platform automates the delivery of **Cloud Development Workstations**, prov
 
 ### 1. High-Level Developer Workspace Architecture
 ```mermaid
-graph TD
-    Dev[Global Developer] --> Portal[DevPortal / API Gateway]
-    Portal --> WorkspaceE[Workspace Provisioning Engine]
-    WorkspaceE --> AVD[AVD Host Pools]
+flowchart TD
+    Dev["Global Developer"] --> Portal["DevPortal / API Gateway"]
+    Portal["DevPortal / API Gateway"] --> WorkspaceE["Workspace Provisioning Engine"]
+    WorkspaceE["Workspace Provisioning Engine"] --> AVD["AVD Host Pools"]
     
-    subgraph "Engineering Stack"
-        ImageE[Golden Image Engine]
-        ToolchainE[Toolchain Automation]
-        SecurityE[Security Guardrails]
+    subgraph EngineeringStack["Engineering Stack"]
+        ImageE["Golden Image Engine"]
+        ToolchainE["Toolchain Automation"]
+        SecurityE["Security Guardrails"]
     end
     
-    subgraph "Infrastructure"
-        Compute[High-Performance / GPU SKU]
-        Storage[Dev Persistence / Home Drives]
-        Registry[Secure Container Registry]
+    subgraph Infrastructure["Infrastructure"]
+        Compute["High-Performance / GPU SKU"]
+        Storage["Dev Persistence / Home Drives"]
+        Registry["Secure Container Registry"]
     end
     
     ImageE --> AVD
@@ -76,157 +76,157 @@ sequenceDiagram
 
 ### 3. Ephemeral Environment Lifecycle
 ```mermaid
-graph TD
-    Trigger[Dev Starts Sprint Task] --> Provision[Provision Clean Workspace]
-    Provision --> Context[Sync Git Repo & Environment Secrets]
-    Context --> Active[Coding Session]
-    Active --> Daily[End of Day: Hibernation]
-    Active --> Finish[End of Task: Terminate & Cleanup]
+flowchart TD
+    Trigger["Dev Starts Sprint Task"] --> Provision["Provision Clean Workspace"]
+    Provision["Provision Clean Workspace"] --> Context["Sync Git Repo & Environment Secrets"]
+    Context["Sync Git Repo & Environment Secrets"] --> Active["Coding Session"]
+    Active["Coding Session"] --> Daily["End of Day: Hibernation"]
+    Active["Coding Session"] --> Finish["End of Task: Terminate & Cleanup"]
 ```
 
 ### 4. Golden Image Pipeline (Hacker-Ready)
 ```mermaid
-graph LR
-    Base[Windows 11 Multi-Session] --> Middleware[Install IDEs: VSCode/Choco]
-    Middleware --> Engineering[Language SDKs: Node/Python/Go]
-    Engineering --> Hardening[Security Agents & CIS Baseline]
-    Hardening --> Image[Compute Gallery Version]
+flowchart LR
+    Base["Windows 11 Multi-Session"] --> Middleware["Install IDEs: VSCode/Choco"]
+    Middleware["Install IDEs: VSCode/Choco"] --> Engineering["Language SDKs: Node/Python/Go"]
+    Engineering["Language SDKs: Node/Python/Go"] --> Hardening["Security Agents & CIS Baseline"]
+    Hardening["Security Agents & CIS Baseline"] --> Image["Compute Gallery Version"]
 ```
 
 ### 5. Toolchain Install Flow
 ```mermaid
-graph TD
-    Select[User Selects Stack] --> Manifest[Fetch YAML Toolchain Definition]
-    Manifest --> Exec[Run Silent Installers]
-    Exec --> Verify[Confirm PATH & Version]
-    Verify --> Notify[Ready to Code]
+flowchart TD
+    Select["User Selects Stack"] --> Manifest["Fetch YAML Toolchain Definition"]
+    Manifest["Fetch YAML Toolchain Definition"] --> Exec["Run Silent Installers"]
+    Exec["Run Silent Installers"] --> Verify["Confirm PATH & Version"]
+    Verify["Confirm PATH & Version"] --> Notify["Ready to Code"]
 ```
 
 ### 6. Security Trust Boundary
 ```mermaid
-graph TD
-    Client[Local Laptop] --> MFA[MFA / Conditional Access]
-    MFA --> Gateway[Azure AVD Gateway]
-    Gateway --> Host[Developer VM]
-    Host -.->|Blocked| Internet[Unrestricted Web]
-    Host -->|Allowed| Intranet[Private Git / CI-CD]
+flowchart TD
+    Client["Local Laptop"] --> MFA["MFA / Conditional Access"]
+    MFA["MFA / Conditional Access"] --> Gateway["Azure AVD Gateway"]
+    Gateway["Azure AVD Gateway"] --> Host["Developer VM"]
+    Host["Developer VM"] -.->|Blocked| Internet["Unrestricted Web"]
+    Host["Developer VM"] -->|Allowed| Intranet["Private Git / CI-CD"]
 ```
 
 ### 7. AVD Global Engineering Topology
 ```mermaid
-graph LR
-    Hub[Global Orchestrator] --> Region1[EMEA - UK South]
-    Hub --> Region2[AMER - East US]
-    Hub --> Region3[APAC - Central AU]
-    Region1 --> Pool[GPU Dev Pool]
+flowchart LR
+    Hub["Global Orchestrator"] --> Region1["EMEA - UK South"]
+    Hub["Global Orchestrator"] --> Region2["AMER - East US"]
+    Hub["Global Orchestrator"] --> Region3["APAC - Central AU"]
+    Region1["EMEA - UK South"] --> Pool["GPU Dev Pool"]
 ```
 
 ### 8. API Request Lifecycle
 ```mermaid
-graph LR
-    Request[POST /workspaces/provision] --> Auth[Verify JWT & RBAC]
-    Auth --> Service[Orchestration Service]
-    Service --> Worker[Background Provisioner]
-    Worker --> Status[Update DB Result]
+flowchart LR
+    Request["POST /workspaces/provision"] --> Auth["Verify JWT & RBAC"]
+    Auth["Verify JWT & RBAC"] --> Service["Orchestration Service"]
+    Service["Orchestration Service"] --> Worker["Background Provisioner"]
+    Worker["Background Provisioner"] --> Status["Update DB Result"]
 ```
 
 ### 9. Multi-Tenant Engineering Model
 ```mermaid
-graph TD
-    Org[Global Engineering]
-    Org --> BU1[FinTech Team]
-    Org --> BU2[Mobile Apps Team]
-    Org --> BU3[External Contractors]
-    BU3 --> Isolation[Strict VNET Silo]
+flowchart TD
+    Org["Global Engineering"]
+    Org["Global Engineering"] --> BU1["FinTech Team"]
+    Org["Global Engineering"] --> BU2["Mobile Apps Team"]
+    Org["Global Engineering"] --> BU3["External Contractors"]
+    BU3["External Contractors"] --> Isolation["Strict VNET Silo"]
 ```
 
 ### 10. Monitoring & Telemetry Flow
 ```mermaid
-graph LR
-    Metrics[CPU/Mem/IO] --> OTEL[OpenTelemetry]
-    OTEL --> Prometheus[Storage]
-    Prometheus --> Grafana[Performance Dashboard]
+flowchart LR
+    Metrics["CPU/Mem/IO"] --> OTEL["OpenTelemetry"]
+    OTEL["OpenTelemetry"] --> Prometheus["Storage"]
+    Prometheus["Storage"] --> Grafana["Performance Dashboard"]
 ```
 
 ### 11. Disaster Recovery Topology
 ```mermaid
-graph TD
-    Primary[London Cluster] --> Sync[Profile & Code Sync]
-    Sync --> Secondary[Zurich Cluster]
-    Primary -.->|Outage| Switch[Failover Redirect]
+flowchart TD
+    Primary["London Cluster"] --> Sync["Profile & Code Sync"]
+    Sync["Profile & Code Sync"] --> Secondary["Zurich Cluster"]
+    Primary["London Cluster"] -.->|Outage| Switch["Failover Redirect"]
 ```
 
 ### 12. Contractor Isolated Access Flow
 ```mermaid
-graph TD
-    C[Contractor] --> Auth[Extra ID B2B]
-    Auth --> AppG[Restricted App Group]
-    AppG --> Proxy[Secure Terminal Gateway]
-    Proxy --> VM[Isolated Dev VM]
+flowchart TD
+    C["Contractor"] --> Auth["Extra ID B2B"]
+    Auth["Extra ID B2B"] --> AppG["Restricted App Group"]
+    AppG["Restricted App Group"] --> Proxy["Secure Terminal Gateway"]
+    Proxy["Secure Terminal Gateway"] --> VM["Isolated Dev VM"]
 ```
 
 ### 13. GPU Workstation Model (AI/ML)
 ```mermaid
-graph LR
-    Model[ML Development] --> VM[NV-Series VM]
-    VM --> CUDA[NVIDIA CUDA Core]
-    CUDA --> Training[High Speed Epoch Execution]
+flowchart LR
+    Model["ML Development"] --> VM["NV-Series VM"]
+    VM["NV-Series VM"] --> CUDA["NVIDIA CUDA Core"]
+    CUDA["NVIDIA CUDA Core"] --> Training["High Speed Epoch Execution"]
 ```
 
 ### 14. CI/CD Operations Pipeline
 ```mermaid
-graph LR
-    Config[Workspace Logic Change] --> Lint[Linting & SAST]
-    Lint --> Build[Containerize Engine]
-    Build --> AKS[Deploy Orchestrators]
+flowchart LR
+    Config["Workspace Logic Change"] --> Lint["Linting & SAST"]
+    Lint["Linting & SAST"] --> Build["Containerize Engine"]
+    Build["Containerize Engine"] --> AKS["Deploy Orchestrators"]
 ```
 
 ### 15. Executive Governance Workflow
 ```mermaid
-graph TD
-    Metric[Measure Build Times] --> Report[Engineering Velocity Report]
-    Report --> Board[Executive Visibility]
-    Board --> Optim[Infrastructure Adjustment]
+flowchart TD
+    Metric["Measure Build Times"] --> Report["Engineering Velocity Report"]
+    Report["Engineering Velocity Report"] --> Board["Executive Visibility"]
+    Board["Executive Visibility"] --> Optim["Infrastructure Adjustment"]
 ```
 
 ### 16. Developer Onboarding Flow
 ```mermaid
-graph TD
-    HR[HR System Entry] --> Trigger[Auto-Account Creation]
-    Trigger --> Preset[Define Dev Persona]
-    Preset --> Env[Pre-warm Workspace]
-    Env --> Welcome[Send Access Email]
+flowchart TD
+    HR["HR System Entry"] --> Trigger["Auto-Account Creation"]
+    Trigger["Auto-Account Creation"] --> Preset["Define Dev Persona"]
+    Preset["Define Dev Persona"] --> Env["Pre-warm Workspace"]
+    Env["Pre-warm Workspace"] --> Welcome["Send Access Email"]
 ```
 
 ### 17. Identity Federation Model
 ```mermaid
-graph LR
-    Client[Browser] --> SAML[Azure AD SAML]
-    SAML --> Portal[Dev Platform Portal]
-    Portal --> Token[Exchange for Workspace Access]
+flowchart LR
+    Client["Browser"] --> SAML["Azure AD SAML"]
+    SAML["Azure AD SAML"] --> Portal["Dev Platform Portal"]
+    Portal["Dev Platform Portal"] --> Token["Exchange for Workspace Access"]
 ```
 
 ### 18. Repo Access Workflow
 ```mermaid
-graph TD
-    Login[Login to Host] --> Secrets[Vault Injection]
-    Secrets --> SSH[Load Git SSH Keys]
-    SSH --> Clone[Allowed Repo Access]
+flowchart TD
+    Login["Login to Host"] --> Secrets["Vault Injection"]
+    Secrets["Vault Injection"] --> SSH["Load Git SSH Keys"]
+    SSH["Load Git SSH Keys"] --> Clone["Allowed Repo Access"]
 ```
 
 ### 19. Global Region Topology
 ```mermaid
-graph TD
-    Global[Global Control Plane]
-    Global --> Cluster1[EMEA Clusters]
-    Global --> Cluster2[US Clusters]
+flowchart TD
+    Global["Global Control Plane"]
+    Global["Global Control Plane"] --> Cluster1["EMEA Clusters"]
+    Global["Global Control Plane"] --> Cluster2["US Clusters"]
 ```
 
 ### 20. Productivity Analytics Flow
 ```mermaid
-graph LR
-    Logins[Session Durations] --> Metrics[Developer UX Metrics]
-    Metrics --> Dashboard[Engineering Health Score]
+flowchart LR
+    Logins["Session Durations"] --> Metrics["Developer UX Metrics"]
+    Metrics["Developer UX Metrics"] --> Dashboard["Engineering Health Score"]
 ```
 
 ---
